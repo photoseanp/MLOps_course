@@ -9,5 +9,5 @@ uv sync                    # create .venv and install dev tools
 uv run ruff check .        # lint
 uv run ruff format .       # format
 uv run ty check            # type check
-uv run python -c "from mlops_course import add; print(add(2, 3))"
+uv run python -c "from src import add; print(add(2, 3))"
 ```
