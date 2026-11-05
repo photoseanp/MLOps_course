@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "MLOps course project"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "numpy>=2.5.4",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -15,8 +17,8 @@ packages = ["src"]
 
 [dependency-groups]
 dev = [
-    "ruff",
-    "ty",
+    "ruff>=0.17.3",
+    "ty>=0.0.96",
 ]
 
 [tool.ruff]
