@@ -1,0 +1,14 @@
+stages:
+  generate_data:
+    cmd: uv run python src/generate_data.py
+    deps:
+      - src/generate_data.py
+    outs:
+      - data/raw_data.csv
+  process_data:
+    cmd: uv run python src/process_data.py
+    deps:
+      - data/raw_data.csv
+      - src/process_data.py
+    metrics:
+      - output/metrics.json
