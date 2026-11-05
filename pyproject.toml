@@ -1,10 +1,11 @@
 [project]
 name = "mlops-course"
 version = "0.1.0"
-description = "MLOps course project"
+description = "MLOps course project: uv, Ruff, ty, Git, DVC"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "dvc>=3.67.1",
     "numpy>=2.5.4",
 ]
 
