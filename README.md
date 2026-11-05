@@ -46,3 +46,26 @@ uv run ty check              # типы
 - коммиты оформлены по [Conventional Commits](https://www.conventionalcommits.org/): `feat:`, `experiment:`, `chore:`, `test:`, `docs:`;
 - изменения попадают в `main` через Pull Request из `develop`.
 
+---
+
+## ДЗ 3. Версионирование данных и пайплайн (DVC)
+
+Remote-хранилище — локальная папка вне репозитория:
+
+```bash
+uv run dvc init
+uv run dvc remote add -d mylocalremote ~/.dvc_local_storage
+```
+
+Пайплайн `dvc.yaml` состоит из двух стадий:
+
+1. `generate_data` — `uv run python src/generate_data.py` создаёт `data/raw_data.csv` (100 строк, seed 42). Файл версионируется DVC, а не Git.
+2. `process_data` — `uv run python src/process_data.py` читает `data/raw_data.csv` и пишет метрики в `output/metrics.json` (`sample_count`, `positive_rate`).
+
+```bash
+uv run dvc repro         # запуск пайплайна
+uv run dvc metrics show  # метрики
+uv run dvc push          # отправить данные в remote
+uv run dvc pull          # скачать данные из remote
+```
+

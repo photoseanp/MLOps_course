@@ -1,0 +1,30 @@
+schema: '2.0'
+stages:
+  generate_data:
+    cmd: uv run python src/generate_data.py
+    deps:
+    - path: src/generate_data.py
+      hash: md5
+      md5: 84b8802af3d13fa7b4e7af8a089f8e87
+      size: 702
+    outs:
+    - path: data/raw_data.csv
+      hash: md5
+      md5: 4867abeeb01b9855c5a217e0d676d83e
+      size: 1202
+  process_data:
+    cmd: uv run python src/process_data.py
+    deps:
+    - path: data/raw_data.csv
+      hash: md5
+      md5: 4867abeeb01b9855c5a217e0d676d83e
+      size: 1202
+    - path: src/process_data.py
+      hash: md5
+      md5: edd81bc2a3b5d62feee489fe8af60760
+      size: 860
+    outs:
+    - path: output/metrics.json
+      hash: md5
+      md5: 75152fb36f9dad19cee2f0ba1b631022
+      size: 51
