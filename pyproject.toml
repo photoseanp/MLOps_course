@@ -1,12 +1,13 @@
 [project]
 name = "mlops-course"
 version = "0.1.0"
-description = "MLOps course project: uv, Ruff, ty, Git, DVC"
+description = "MLOps course project: uv, Ruff, ty, Git, DVC, pytest"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "dvc>=3.67.1",
     "numpy>=2.5.4",
+    "torch>=2.15.0",
 ]
 
 [build-system]
@@ -18,6 +19,9 @@ packages = ["src"]
 
 [dependency-groups]
 dev = [
+    "hypothesis>=6.170.14",
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
     "ruff>=0.17.3",
     "ty>=0.0.96",
 ]
@@ -28,5 +32,36 @@ line-length = 88
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
 [tool.ty.environment]
 python-version = "3.12"
+
+[tool.ty.rules]
+invalid-argument-type = "error"
+invalid-assignment = "error"
+invalid-return-type = "error"
+# torch declares nn.Module.forward as a mutable attribute, so every model
+# overriding forward() would be reported; this is a known false positive.
+invalid-mutable-override = "ignore"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "unit: unit tests for individual components (block, model, dataloader)",
+    "property: property-based tests with Hypothesis",
+    "smoke: fast smoke and dry-run tests (loss finite, gradients not None)",
+    "overfit: overfit a single batch",
+    "e2e: end-to-end pipeline tests",
+]
+
+[tool.coverage.run]
+# CLI scripts (DVC stages and MLflow runs) are exercised manually, not by unit tests
+omit = [
+    "src/generate_data.py",
+    "src/process_data.py",
+    "src/train.py",
+    "src/train_autolog.py",
+]
