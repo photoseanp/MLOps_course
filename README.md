@@ -69,3 +69,29 @@ uv run dvc push          # отправить данные в remote
 uv run dvc pull          # скачать данные из remote
 ```
 
+---
+
+## ДЗ 4. Тестирование ML-кода (TDD, pytest, Hypothesis)
+
+Код написан по TDD: сначала коммит с падающими тестами (red), затем реализация (green).
+
+Компоненты (`src/`):
+
+- `models.py`: `LinearBlock` (Linear + ReLU) и `SimpleClassifier`.
+- `dataset.py`: воспроизводимый `SyntheticDataset` и `create_dataloader`.
+- `trainer.py`: `Trainer` с `fit` (в т. ч. `fast_dev_run`), `evaluate`, `train_epoch_with_checks` (smoke) и `overfit_batch`.
+
+Пирамида тестов (метки pytest):
+
+- `unit` — размерности выходов, ReLU, длина датасета, сборка батчей.
+- `property` — инварианты формы на случайных размерах (Hypothesis).
+- `smoke` — dry run на одном батче; loss конечен и убывает, у всех параметров `grad is not None`.
+- `overfit` — переобучение на одном батче до loss < 0.05.
+- `e2e` — полный цикл: данные → обучение → оценка (accuracy > 0.8) → инференс.
+
+```bash
+uv run pytest -v --cov=src --cov-report=term-missing
+uv run pytest -m smoke -v
+uv run pytest -m property -v
+```
+
