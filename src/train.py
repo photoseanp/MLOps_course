@@ -5,7 +5,7 @@ import random
 import numpy as np
 
 SEED = 42
-LEARNING_RATE = 1e-3
+LEARNING_RATE = 5e-2
 EPOCHS = 5
 
 
